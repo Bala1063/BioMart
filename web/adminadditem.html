@@ -1,0 +1,365 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title> Bio Mart </title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <!-- Place favicon.ico in the root directory -->
+        <link rel="stylesheet" href="css/vendor1.css">
+         <script type="text/javascript" src="js/jquery.min.js"></script>
+        <!-- Theme initialization -->
+        <script>
+            var themeSettings = (localStorage.getItem('themeSettings')) ? JSON.parse(localStorage.getItem('themeSettings')) :
+                    {};
+            var themeName = themeSettings.themeName || '';
+            if (themeName)
+            {
+                document.write('<link rel="stylesheet" id="theme-style" href="css/app-' + themeName + '.css">');
+            } else
+            {
+                document.write('<link rel="stylesheet" id="theme-style" href="css/app.css">');
+            }
+        </script>
+         <script>
+   function chooseFile() {
+      $("#fileinput").click();
+   }
+</script>
+  <script>
+    var selDiv = "";
+    var storedFiles = [];
+     var i=0;
+         var  blob=[]; 
+    $(document).ready(function() {
+        $("#fileinput").on("change", handleFileSelect);
+        
+        selDiv = $("#selectedFiles"); 
+            
+        $("body").on("click", ".selFile", removeFile);
+    });
+        
+    function handleFileSelect(e) {
+       
+        var files = e.target.files;
+        var filesArr = Array.prototype.slice.call(files);
+        filesArr.forEach(function(f) {          
+
+            if(!f.type.match("image.*")) {
+                return;
+            }
+            storedFiles.push(f);
+            
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var html = "<div class=image-container > <img src=\"" + e.target.result + "\" data-file='"+f.name+"' class='selFile' id=image"+i+" name=image_"+i+" title='Click to remove'> <br clear=\"left\"/><div>";
+                selDiv.append(html);
+                i++;
+                blob.push(dataURItoBlob(e.target.result));
+                
+            }
+            reader.readAsDataURL(f); 
+        });
+        
+    }
+        
+    function handleForm(e) {
+        e.preventDefault();
+        var data = new FormData();
+        
+        for(var i=0, len=storedFiles.length; i<len; i++) {
+            data.append('files', storedFiles[i]); 
+        }
+        
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'AdminServlet', true);
+        
+        xhr.onload = function(e) {
+            if(this.status == 200) {
+                console.log(e.currentTarget.responseText);  
+                alert(e.currentTarget.responseText + ' items uploaded.');
+            }
+        }
+        
+        xhr.send(data);
+    }
+        function dataURItoBlob(dataURI) {
+    // convert base64/URLEncoded data component to raw binary data held in a string
+    var byteString;
+    if (dataURI.split(',')[0].indexOf('base64') >= 0)
+        byteString = atob(dataURI.split(',')[1]);
+    else
+        byteString = unescape(dataURI.split(',')[1]);
+
+    // separate out the mime component
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+    // write the bytes of the string to a typed array
+    var ia = new Uint8Array(byteString.length);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+
+    return new Blob([ia], {type:mimeString});
+}
+    function removeFile(e) {
+        var file = $(this).data("file");
+        for(var i=0;i<storedFiles.length;i++) {
+            if(storedFiles[i].name === file) {
+                storedFiles.splice(i,1);
+                break;
+            }
+        }
+        $(this).parent().remove();
+    }
+    </script>
+
+
+         
+    <style>
+input[type="file"] {
+  display: block;
+}
+.imageThumb {
+  max-height: 75px;
+  border: 2px solid;
+  padding: 1px;
+  cursor: pointer;
+}
+.pip {
+  display: inline-block;
+  margin: 10px 10px 0 0;
+}
+.remove {
+  display: block;
+  background: #444;
+  border: 1px solid black;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+}
+.remove:hover {
+  background: white;
+  color: black;
+}
+#selectedFiles img {
+        max-width: 200px;
+        max-height: 200px;
+        float: left;
+        margin-bottom:0px;
+    }
+</style>
+    </head>
+
+    <body>
+        <div class="main-wrapper">
+            <div class="app" id="app">
+                <header class="header">
+                    <div class="header-block header-block-collapse hidden-lg-up"> <button class="collapse-btn" id="sidebar-collapse-btn">
+                            <i class="fa fa-bars"></i>
+                        </button> </div>
+
+                    <div class="header-block header-block-nav">
+                        <ul class="nav-profile">
+
+                            <li class="profile dropdown">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <span class="name">
+                                        Admin
+                                    </span> </a>
+                                <div class="dropdown-menu profile-dropdown-menu" aria-labelledby="dropdownMenu1">
+                                    <form action="LoginServlet" method="post" id="f1">                            
+                                        <a class="dropdown-item" href="passwordchange.jsp"> <i class="fa fa-gear icon"></i>  Change Password </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="javascript:{}" onclick="document.getElementById('f1').submit();">  <i class="fa fa-power-off icon"></i> Logout </a>
+                                        <input type="hidden" name="operation" value="logout" >
+                                        </div>
+                                     </form>
+                            </li>
+                        </ul>
+                    </div>
+                </header>
+                <aside class="sidebar">
+                    <div class="sidebar-container">
+                        <div class="sidebar-header">
+                            <div class="brand">
+                                <div class="logo"> <span class="l l1"></span> <span class="l l2"></span> <span class="l l3"></span> <span class="l l4"></span> <span class="l l5"></span> </div> Bio Mart </div>
+                        </div>
+                        <nav class="menu">
+                            <ul class="nav metismenu" id="sidebar-menu">
+                                <li>
+                                    <a href="table.html"> <i class="fa fa-home"></i>Payment Status</a>
+                                </li>
+                                <li class="active open">
+                                    <a href=""> <i class="fa fa-th-large"></i> Items Manager <i class="fa arrow"></i> </a>
+                                    <ul>
+                                        <li class="active"> <a href="adminadditem.html">
+                                                Add item
+                                            </a> </li>
+                                        <li> <a href="adminedititem.html">
+                                                Edit item
+                                            </a> </li>
+                                        <li> <a href="admindeleteitem.jsp">
+                                                Delete Item
+                                            </a> </li>
+                                    </ul>
+                                </li>
+                                <li >
+                                    <a href=""> <i class="fa fa-pencil-square-o"></i> Salesman<i class="fa arrow"></i> </a>
+                                    <ul><li > <a href="adminaddsales.html">
+                                                Add Salesman
+                                            </a> </li>
+                                        <li > <a href="admineditsales.html">
+                                                Edit Salesman Details
+                                            </a> </li>
+                                        <li > <a href="admindeletesales.html">
+                                                Remove Salesman
+                                            </a> </li></ul>
+                                </li>
+                                <li >
+                                    <a href=""> <i class="fa fa-user"></i> Retailer<i class="fa arrow"></i> </a>
+                                    <ul><li > <a href="adminaddret.html">
+                                                Add Retailer
+                                            </a> </li>
+                                        <li > <a href="admineditret.html">
+                                                Edit Retailer Details
+                                            </a> </li>
+                                        <li > <a href="adminrefer.html">
+                                                Referred Details
+                                            </a> </li>
+                                        <li > <a href="admindeleteret.html">
+                                                Remove Retailer
+                                            </a> </li></ul>
+                                </li>
+                                <li>
+                                    <a href=""> <i class="fa fa-th-large"></i>Orders<i class="fa arrow"></i> </a>
+                                    <ul>
+                                        <li> <a href="adminorderconfirm.html">
+                                                Order Confirmation
+                                            </a> </li>
+                                        <li> <a href="adminorderpending.html">
+                                                Pending Order
+                                            </a> </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href=""> <i class="fa fa-envelope"></i> Cheque Status <i class="fa arrow"></i> </a>
+                                    <ul>
+                                        <li> <a href="adminchequestatus.html">
+                                                Status Update
+                                            </a> </li>
+                                        <li> <a href="chequetransaction.html">
+                                                Transaction
+                                            </a> </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <footer class="sidebar-footer">
+                        <ul class="nav metismenu" id="customize-menu">
+                            <li>
+                                <ul>
+                                    <li class="customize">
+
+                                        <div class="customize-item">
+                                            <ul class="customize-colors">
+                                                <li> <span class="color-item color-red" data-theme="red"></span> </li>
+                                                <li> <span class="color-item color-orange" data-theme="orange"></span> </li>
+                                                <li> <span class="color-item color-green active" data-theme=""></span> </li>
+                                                <li> <span class="color-item color-seagreen" data-theme="seagreen"></span> </li>
+                                                <li> <span class="color-item color-blue" data-theme="blue"></span> </li>
+                                                <li> <span class="color-item color-purple" data-theme="purple"></span> </li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <a href=""> <i class="fa fa-cog"></i> Customize </a>
+                            </li>
+                        </ul>
+                    </footer>
+                </aside>
+                <div class="sidebar-overlay" id="sidebar-overlay"></div>
+                <article class="content item-editor-page">
+                    <div class="title-block">
+                        <h3 class="title"> Add new item <span class="sparkline bar" data-type="bar"></span> </h3>
+                    </div>
+                    <form action="AdminServlet" method="post"  enctype="multipart/form-data" >
+                        <div class="card card-block">
+                            <div class="form-group row"> <label class="col-sm-2 form-control-label text-xs-right">
+                                    Name:
+                                </label>
+                                <div class="col-sm-10"> <input type="text" class="form-control boxed" name="product_name" id="productname" placeholder="Product Name" required> </div>
+                            </div>
+                            <div class="form-group row"> <label class="col-sm-2 form-control-label text-xs-right">
+                                    Description:
+                                </label>
+                                <div class="col-sm-10"> <input type="text" class="form-control boxed" placeholder="Description" name="description" id="description" required> </div>
+                            </div>
+
+                            <div class="form-group row"> <label class="col-sm-2 form-control-label text-xs-right">
+                                    Images:
+                                </label>
+                                <div class="col-sm-10">
+                                    <div class="images-container">
+
+
+                                        <div id="selectedFiles"></div>
+                                        
+                                                <div class="image-container new" onclick="chooseFile()">
+                                                <div class="image"> <i class="fa fa-plus"></i> </div>
+                                                
+                                    </div>
+                                       
+                                </div>
+                            </div>
+                             <input type="file" id="fileinput" name="file_input" style="height:0px;overflow:hidden" />
+                            <div class="form-group row">
+                                <div class="col-sm-10 col-sm-offset-2"> <button type="submit" name="operation" value="Submit" class="btn btn-primary">
+                                       Submit
+                                    </button> </div>
+                            </div>
+                        </div>
+                        </div>
+                    </form>
+                </article>
+               
+                
+                <!-- /.modal -->
+               
+                <!-- /.modal -->
+            </div>
+        </div>
+        <!-- Reference block for JS -->
+        <div class="ref" id="ref">
+            <div class="color-primary"></div>
+            <div class="chart">
+                <div class="color-primary"></div>
+                <div class="color-secondary"></div>
+            </div>
+        </div>
+        <script>
+            (function (i, s, o, g, r, a, m)
+            {
+                i['GoogleAnalyticsObject'] = r;
+                i[r] = i[r] || function ()
+                {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date();
+                a = s.createElement(o),
+                        m = s.getElementsByTagName(o)[0];
+                a.async = 1;
+                a.src = g;
+                m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+            ga('create', 'UA-80463319-2', 'auto');
+            ga('send', 'pageview');
+        </script>
+        <script src="js/admindash.js"></script>
+        <script src="js/adminapp.js"></script>
+    </body>
+
+</html>

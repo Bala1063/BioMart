@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<hibernate-mapping>
+    <class name="biomart.Bean.CheckBean" table="Check_details">
+        <id name="id" type="int" column="Id">
+            <generator class="increment"/>
+        </id>
+        <property name="receiptNo" type="string" column="Receipt_no"/>
+        <property name="submitDate" type="string" column="Submit_date"/>
+        <property name="checkNo" type="string" column="Check_no"/>
+         <property name="amount" type="float" column="amount"/>
+         <property name="status" type="string" column="Status"/>
+    </class>
+</hibernate-mapping>
+

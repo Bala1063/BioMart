@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<hibernate-mapping>
+    <class name="biomart.Bean.PersonalDetailsBean" table="Personal_tb">
+        <id column="User_id" name="userId" type="string">
+            <generator class="assigned"/>
+        </id>
+        <property column="User_name" name="userName" type="string"/>
+        <property column="Type" name="type" type="string"/>
+        <property column="Phone_no" name="phoneNo" type="long"/>
+        <property column="Email_id" name="emailId" type="string"/>
+        <property column="Store_name" name="storeName" type="string"/>
+        <one-to-one cascade="all" class="biomart.Bean.PaddressBean" lazy="false" name="pAddressBean"/>
+        <one-to-one cascade="all" class="biomart.Bean.CashBean" lazy="false" name="cashBean"/>
+        <list cascade="all" lazy="false" name="paymentDetailsBeans" table="biomart.beanClass.PaymentDetailsBean">
+            <key column="User_id"/>
+            <index column="type"/>
+            <one-to-many class="biomart.Bean.PaymentDetailsBean"/>
+        </list>
+        <list cascade="all" lazy="false" name="checkBeans" table="biomart.beanClass.CheckBean">
+            <key column="User_id"/>
+            <index column="type"/>
+            <one-to-many class="biomart.Bean.CheckBean"/>
+        </list>
+        <list cascade="all" lazy="false" name="orderBeans" table="biomart.beanClass.OrderBean">
+            <key column="User_id"/>
+            <index column="type"/>
+            <one-to-many class="biomart.Bean.OrderBean"/>
+        </list>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<hibernate-mapping>
+  <class name="biomart.Bean.LoginBean" table="Login_tb">
+    <id column="User_id" name="userId" type="string">
+      <generator class="assigned"/>
+    </id>
+    <property column="Password" name="password" type="string"/>
+    <property column="Type" name="type" type="string"/>
+    <property column="Login_time" name="loginTime" type="date"/>
+    <property column="Logout_time" name="logoutTime" type="date"/>
+    <property column="Status" name="status" type="string"/>
+  </class>
+</hibernate-mapping>
