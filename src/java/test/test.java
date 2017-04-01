@@ -15,7 +15,7 @@ import biomart.DAO.SalesmanDAO;
 public class test {
     public static void main(String[] args) {
          SalesmanDAO salesmanDAO = new SalesmanDAO();
-                PersonalDetailsBean personalDetailsBean = salesmanDAO.viewSalesmanDetails(salesmanDAO.getSalesmanId("balaji"));
+                PersonalDetailsBean personalDetailsBean = salesmanDAO.viewSalesmanDetails("SAL_015");
                 System.out.println(personalDetailsBean.toString());
     }
     

@@ -25,6 +25,7 @@ public class CommonDAO {
                 t.rollback();
             }
             e.printStackTrace();
+            return "fail";
         } finally {
             session.close();
         }

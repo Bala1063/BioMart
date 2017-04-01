@@ -1,3 +1,10 @@
+<%-- 
+    Document   : admineditsales
+    Created on : Apr 1, 2017, 2:16:38 PM
+    Author     : bala
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!doctype html>
 <html class="no-js" lang="en">
 
@@ -25,8 +32,17 @@
         </script>
         <script>
             var req;
-            function get()
+            function checkStatus()
             {
+                var x=document.getElementById("status").value;
+                if(x!="")
+                {
+                    document.getElementById("status").value="";
+                    window.alert(x);
+                }
+            }
+            function get()
+            {    
                 if (window.XMLHttpRequest) {
                     return  new XMLHttpRequest( );
                 } else if (window.ActiveXObject)
@@ -35,7 +51,7 @@
                 }
             }
             function namelist()
-            {
+            {   checkStatus();
                 req = get();
                 var url = "AdminSalesmanServlet?operation=" + "namelist";
                 req.onreadystatechange = function () {
@@ -49,27 +65,27 @@
             }
             function getDetails(userName)
             {
-               
+
                 req = get();
-                var url = "AdminSalesmanServlet?operation=getDetails&&userName="+userName;
+                var url = "AdminSalesmanServlet?operation=getDetails&&userName=" + userName;
                 req.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
-                       
-                        var details=this.responseText.split(",");
-                        document.getElementById("userid").value=details[0];
-                        document.getElementById("mobileno").value=details[2];
-                        document.getElementById("email").value=details[3];
-                        document.getElementById("doorno").value=details[5];
-                        document.getElementById("streetname").value=details[6];
-                        document.getElementById("city").value=details[7];
-                        document.getElementById("district").value=details[8];
-                        document.getElementById("state").value=details[9];
-                        document.getElementById("pincode").value=details[10];
+
+                        var details = this.responseText.split(",");
+                        document.getElementById("userid").value = details[0];
+                        document.getElementById("mobileno").value = details[2];
+                        document.getElementById("email").value = details[3];
+                        document.getElementById("doorno").value = details[5];
+                        document.getElementById("streetname").value = details[6];
+                        document.getElementById("city").value = details[7];
+                        document.getElementById("district").value = details[8];
+                        document.getElementById("state").value = details[9];
+                        document.getElementById("pincode").value = details[10];
                     }
                 };
                 req.open("POST", url, true);
                 req.send(null);
-                
+
             }
 
         </script>
@@ -132,7 +148,7 @@
                                     <ul><li > <a href="adminaddsales.jsp">
                                                 Add Salesman
                                             </a> </li>
-                                        <li class="active"> <a href="admineditsales.html">
+                                        <li class="active"> <a href="admineditsales.jsp">
                                                 Edit Salesman Details
                                             </a> </li>
                                         <li > <a href="admindeletesales.html">
@@ -213,7 +229,7 @@
                             </div>
                         </div>
                     </div>
-                    <form action="AdminServlet" method="post">
+                    <form action="AdminSalesmanServlet" method="post">
                         <div class="form-group row"> <label class="col-sm-2 form-control-label text-xs-right">
                                 Name:
                             </label>
@@ -247,7 +263,13 @@
                             <div class="col-sm-3"> <input type="text" class="form-control boxed" placeholder="State" name="state" id="state" value=""> </div>
                             <div class="col-sm-3"> <input type="text" class="form-control boxed" placeholder="Pincode" name="pincode" id="pincode" value=""> </div>
                         </div>
-                        <input type="hidden"  id="userid" value="" />
+                        <input type="hidden"  id="userid" name="userid" value="" />
+                        <%if (request.getAttribute("status") != null) {%>
+                        <input type="hidden" name="status" id="status" value="<%=(String) request.getAttribute("status")%>"/>
+                        <%request.setAttribute("status", null);
+                    } else {%>
+                        <input type="hidden" name="status" id="status" />
+                        <%}%>
                         <div class="form-group row">
                             <div class="col-sm-10 col-sm-offset-2"> <button type="submit" value="update" name="operation" class="btn btn-primary">
                                     Update

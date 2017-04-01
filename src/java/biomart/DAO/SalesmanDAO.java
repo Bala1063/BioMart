@@ -30,9 +30,8 @@ public class SalesmanDAO {
 
     public PersonalDetailsBean viewSalesmanDetails(String userId) {
         Session session = Util.getSessionFactory().openSession();
-        Criteria criteria = session.createCriteria(PersonalDetailsBean.class);
-        criteria.add(Restrictions.eq("userId", userId));
-        PersonalDetailsBean personalDetailsBean = (PersonalDetailsBean)criteria.list().get(0);
+        
+        PersonalDetailsBean personalDetailsBean = (PersonalDetailsBean)session.get(PersonalDetailsBean.class, userId);
         session.close();
         return personalDetailsBean;
     }

@@ -29,27 +29,45 @@ public class AdminSalesmanServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String operation = request.getParameter("operation");
-        if (operation.equalsIgnoreCase("add")) {
-            PersonalDetailsBean personalDetailsBean = new PersonalDetailsBean();
-
-            String userId = new SalesmanIdGenerator().generateSalesmanId(request.getParameter("username"));
-            personalDetailsBean.setUserId(userId);
+        if (operation.equalsIgnoreCase("add") || operation.equalsIgnoreCase("update")) {
+            PersonalDetailsBean personalDetailsBean = null;
+            String userId = "";
+            if (operation.equalsIgnoreCase("add")) {
+                personalDetailsBean = new PersonalDetailsBean();
+                userId = new SalesmanIdGenerator().generateSalesmanId(request.getParameter("username"));
+                personalDetailsBean.setUserId(userId);
+            } else if (operation.equalsIgnoreCase("update")) {
+                personalDetailsBean = new SalesmanDAO().viewSalesmanDetails(request.getParameter("userid"));
+            }
             personalDetailsBean.setUserName(request.getParameter("username"));
             personalDetailsBean.setType("S");
             personalDetailsBean.setEmailId(request.getParameter("email"));
             personalDetailsBean.setPhoneNo(Long.parseLong(request.getParameter("mobileno")));
-            PaddressBean paddressBean = new PaddressBean();
+            PaddressBean paddressBean = null;
+            if (operation.equalsIgnoreCase("add")) {
+                paddressBean = new PaddressBean();
+                paddressBean.setPersonalDetailsBean(personalDetailsBean);
+            } else if (operation.equalsIgnoreCase("update")) {
+                paddressBean = personalDetailsBean.getpAddressBean();
+            }
             paddressBean.setDoorNo(request.getParameter("doorno"));
             paddressBean.setStreet(request.getParameter("streetname"));
             paddressBean.setCity(request.getParameter("city"));
             paddressBean.setDistrict(request.getParameter("district"));
             paddressBean.setState(request.getParameter("state"));
             paddressBean.setPincode(Long.parseLong(request.getParameter("pincode")));
-            paddressBean.setPersonalDetailsBean(personalDetailsBean);
-            personalDetailsBean.setpAddressBean(paddressBean);
+            if (operation.equalsIgnoreCase("add")) {
+                personalDetailsBean.setpAddressBean(paddressBean);
+            }
             if (new CommonDAO().addOrUpdateDetails(personalDetailsBean).equalsIgnoreCase("success")) {
-                request.setAttribute("status", "Salesman Added");
-                request.getRequestDispatcher("adminaddsales.jsp").forward(request, response);
+
+                if (operation.equalsIgnoreCase("add")) {
+                    request.setAttribute("status", "Salesman Added");
+                    request.getRequestDispatcher("adminaddsales.jsp").forward(request, response);
+                } else if (operation.equalsIgnoreCase("update")) {
+                    request.setAttribute("status", "Salesman Updated");
+                    request.getRequestDispatcher("admineditsales.jsp").forward(request, response);
+                }
             }
         } else if (operation.equalsIgnoreCase("namelist")) {
             response.setContentType("text/html;charset=UTF-8");
