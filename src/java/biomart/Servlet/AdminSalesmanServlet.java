@@ -7,6 +7,7 @@ package biomart.Servlet;
 
 import biomart.Bean.PaddressBean;
 import biomart.Bean.PersonalDetailsBean;
+import biomart.DAO.AdminDAO;
 import biomart.DAO.CommonDAO;
 import biomart.DAO.SalesmanDAO;
 import biomart.IdGenerator.SalesmanIdGenerator;
@@ -97,6 +98,32 @@ public class AdminSalesmanServlet extends HttpServlet {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else if (operation.equalsIgnoreCase("nolist")) {
+            response.setContentType("text/html;charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            String nolist = "";
+            String salesmanname = request.getParameter("salesmanname");
+            try {
+                List<PersonalDetailsBean> personalDetailsBeans = new SalesmanDAO().getAllSalesman();
+                for (PersonalDetailsBean personalDetailsBean : personalDetailsBeans) {
+                    if (salesmanname.equalsIgnoreCase(personalDetailsBean.getUserName())) {
+                        nolist += "<option>" + personalDetailsBean.getPhoneNo() + "</option>";
+                    }
+                }
+                out.println(nolist);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else if (operation.equalsIgnoreCase("remove")) {
+            String salesmanname = request.getParameter("username");
+            long mobileno = Long.parseLong(request.getParameter("mobileno"));
+            if (new AdminDAO().removeUserDetails(salesmanname, mobileno).equalsIgnoreCase("success")) {
+                request.setAttribute("status", "Salesman Removed");
+                request.getRequestDispatcher("admindeletesales.jsp").forward(request, response);
+            }
+
         }
     }
 

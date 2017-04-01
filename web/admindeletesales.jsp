@@ -1,3 +1,10 @@
+<%-- 
+    Document   : admindeletesales
+    Created on : Apr 1, 2017, 8:50:58 PM
+    Author     : bala
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!doctype html>
 <html class="no-js" lang="en">
 
@@ -23,9 +30,59 @@
                 document.write('<link rel="stylesheet" id="theme-style" href="css/app.css">');
             }
         </script>
+        <script>
+            var req;
+            function checkStatus()
+            {
+                var x = document.getElementById("status").value;
+                if (x != "")
+                {
+                    document.getElementById("status").value = "";
+                    window.alert(x);
+                }
+            }
+            function get()
+            {
+                if (window.XMLHttpRequest) {
+                    return  new XMLHttpRequest( );
+                } else if (window.ActiveXObject)
+                {
+                    return new ActiveXObject("Microsoft.XMLHTTP");
+                }
+            }
+            function namelist()
+            {
+                checkStatus();
+                req = get();
+                var url = "AdminSalesmanServlet?operation=" + "namelist";
+                req.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("snameid").innerHTML =
+                                this.responseText;
+                    }
+                };
+                req.open("POST", url, true);
+                req.send(null);
+            }
+            function nolist(salesmanname)
+            {
+
+                req = get();
+                var url = "AdminSalesmanServlet?operation=nolist&&salesmanname=" + salesmanname;
+                req.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("mobilenoid").innerHTML =
+                                this.responseText;
+                    }
+                };
+                req.open("POST", url, true);
+                req.send(null);
+
+            }
+        </script>
     </head>
 
-    <body>
+    <body onload="namelist()">
         <div class="main-wrapper">
             <div class="app" id="app">
                 <header class="header">
@@ -163,29 +220,32 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="row"><div class="col-md-8">
-                            <input class="form-control form-control-lg" type="text" list="sname" placeholder="Salesman Name"></div>
-                        <datalist id="sname">
-                            <option class=>newm</option>
-                            <option>new</option>
-                        </datalist>    
-                    </div>   
-                    <br>
-                    <div class="row">  
-                        <div class="col-md-8">  
-                            <input class="form-control form-control-lg" type="text" list="mobilnoid" placeholder="Mobile No."></div>
-                        <datalist id="mobilenoid">
-                            <option class=>newm</option>
-                            <option>new</option>
-                        </datalist>   
-                    </div>
-                    <br>
-                    <div class="form-group row">
-                        <div class="col-sm-10 col-sm-offset-2"> <button type="submit" class="btn btn-primary">
-                                Delete
-                            </button> </div>
-                    </div>                   
+                    <form action="AdminSalesmanServlet" method="post">
+                        <div class="row"><div class="col-md-8">
+                                <input class="form-control form-control-lg" type="text" list="snameid"  placeholder="Salesman Name" oninput="nolist(this.value)" name="username" id="username"></div>
+                            <datalist id="snameid">
+                            </datalist>    
+                        </div>   
+                        <br>
+                        <div class="row">  
+                            <div class="col-md-8">  
+                                <input class="form-control form-control-lg" type="text" list="mobilenoid" placeholder="Mobile No." name="mobileno" id="mobileno"></div>
+                            <datalist id="mobilenoid">
+                            </datalist>   
+                        </div>
+                        <br>
+                        <%if (request.getAttribute("status") != null) {%>
+                        <input type="hidden" name="status" id="status" value="<%=(String) request.getAttribute("status")%>"/>
+                        <%request.setAttribute("status", null);
+                        } else {%>
+                        <input type="hidden" name="status" id="status" />
+                        <%}%>
+                        <div class="form-group row">
+                            <div class="col-sm-10 col-sm-offset-2"> <button type="submit" name="operation" value="remove" class="btn btn-primary">
+                                    Remove
+                                </button> </div>
+                        </div>
+                    </form>
                 </article>
             </div>
         </div>

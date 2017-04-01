@@ -25,10 +25,9 @@ import org.hibernate.criterion.Restrictions;
  */
 public class AdminDAO {
 
-    public String removeUserDetails(String district, String userName, int phoneNo) {
+    public String removeUserDetails(String userName, long phoneNo) {
         Session session = Util.getSessionFactory().openSession();
-        Query query = session.createQuery("delete from PersonalDetailsBean where District=:dis and User_name=:un and Phone_no=:pno");
-        query.setParameter("dis", district);
+        Query query = session.createQuery("delete from PersonalDetailsBean where userName=:un and phoneNo=:pno");
         query.setParameter("un", userName);
         query.setParameter("pno", phoneNo);
         session.close();
