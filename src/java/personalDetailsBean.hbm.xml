@@ -27,7 +27,7 @@ and open the template in the editor.
             <index column="type"/>
             <one-to-many class="biomart.Bean.CheckBean"/>
         </list>
-        <list cascade="all" lazy="false" name="orderBeans" table="biomart.beanClass.OrderBean">
+        <list cascade="all" lazy="false" name="orderBeans" table="biomart.beanClass.OrderBean" >
             <key column="User_id"/>
             <index column="type"/>
             <one-to-many class="biomart.Bean.OrderBean"/>

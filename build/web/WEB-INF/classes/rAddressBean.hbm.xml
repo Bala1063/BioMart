@@ -6,7 +6,7 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <hibernate-mapping>
-  <class name="biomart.Bean.RaddressBean" table="Address_tb">
+  <class name="biomart.Bean.RaddressBean" table="Address_tb1">
     <id column="Reference_id" name="referenceId" type="string">
       <generator class="foreign">
         <param name="property">referenceBean</param>
@@ -17,7 +17,7 @@ and open the template in the editor.
     <property column="District" name="district" type="string"/>
     <property column="City" name="city" type="string"/>
     <property column="State" name="state" type="string"/>
-    <property column="pincode" name="pincode" type="int"/>
+    <property column="pincode" name="pincode" type="long"/>
     <one-to-one name="referenceBean"/>
   </class>
 </hibernate-mapping>

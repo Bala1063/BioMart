@@ -8,8 +8,11 @@ package biomart.Servlet;
 import biomart.Bean.PaddressBean;
 import biomart.Bean.PersonalDetailsBean;
 import biomart.DAO.CommonDAO;
+import biomart.DAO.SalesmanDAO;
 import biomart.IdGenerator.SalesmanIdGenerator;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,34 +27,59 @@ public class AdminSalesmanServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String operation=request.getParameter("operation");
-        if(operation.equalsIgnoreCase("add"))
-        {
-            PersonalDetailsBean personalDetailsBean=new PersonalDetailsBean();
-           
-            String userId=new SalesmanIdGenerator().generateSalesmanId(request.getParameter("username"));
+
+        String operation = request.getParameter("operation");
+        if (operation.equalsIgnoreCase("add")) {
+            PersonalDetailsBean personalDetailsBean = new PersonalDetailsBean();
+
+            String userId = new SalesmanIdGenerator().generateSalesmanId(request.getParameter("username"));
             personalDetailsBean.setUserId(userId);
             personalDetailsBean.setUserName(request.getParameter("username"));
             personalDetailsBean.setType("S");
             personalDetailsBean.setEmailId(request.getParameter("email"));
             personalDetailsBean.setPhoneNo(Long.parseLong(request.getParameter("mobileno")));
-            PaddressBean paddressBean=new PaddressBean();
+            PaddressBean paddressBean = new PaddressBean();
             paddressBean.setDoorNo(request.getParameter("doorno"));
             paddressBean.setStreet(request.getParameter("streetname"));
             paddressBean.setCity(request.getParameter("city"));
             paddressBean.setDistrict(request.getParameter("district"));
             paddressBean.setState(request.getParameter("state"));
-            paddressBean.setPincode(Integer.parseInt(request.getParameter("pincode")));
+            paddressBean.setPincode(Long.parseLong(request.getParameter("pincode")));
             paddressBean.setPersonalDetailsBean(personalDetailsBean);
             personalDetailsBean.setpAddressBean(paddressBean);
-            if(new CommonDAO().addOrUpdateDetails(personalDetailsBean).equalsIgnoreCase("success"))
-            {
-               request.setAttribute("status", "Salesman Added");
-               request.getRequestDispatcher("adminaddsales.jsp").forward(request, response);
+            if (new CommonDAO().addOrUpdateDetails(personalDetailsBean).equalsIgnoreCase("success")) {
+                request.setAttribute("status", "Salesman Added");
+                request.getRequestDispatcher("adminaddsales.jsp").forward(request, response);
+            }
+        } else if (operation.equalsIgnoreCase("namelist")) {
+            response.setContentType("text/html;charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            String salesmannamelist = "";
+            try {
+                List<PersonalDetailsBean> personalDetailsBeans = new SalesmanDAO().getAllSalesman();
+                for (PersonalDetailsBean personalDetailsBean : personalDetailsBeans) {
+                    salesmannamelist += "<option>" + personalDetailsBean.getUserName() + "</option>";
+                }
+                out.println(salesmannamelist);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else if (operation.equalsIgnoreCase("getDetails")) {
+            response.setContentType("text/html;charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            String details = "";
+            String userName = request.getParameter("userName");
+            try {
+                SalesmanDAO salesmanDAO = new SalesmanDAO();
+                PersonalDetailsBean personalDetailsBean = salesmanDAO.viewSalesmanDetails(salesmanDAO.getSalesmanId(userName));
+                details = personalDetailsBean.toString();
+                out.println(details);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
-      
-            
     }
 
 }

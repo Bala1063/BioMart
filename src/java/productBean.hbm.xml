@@ -13,7 +13,7 @@ and open the template in the editor.
         </id>
         <property name="productName" type="string" column="Product_name"/>
         <property name="description" type="string" column="Description"/>
-        <property name="price" type="string" column="Price"/>
+        <property name="price" type="float" column="Price"/>
         <list name="imageBeans" table="biomart.Bean.ProductImageBean" cascade="all" lazy="false">
             <key column="Product_id"/>
             <index column="type"/>

@@ -14,7 +14,7 @@ public class ReferenceBean {
     private String name;
     private String storeName;
     private String email;
-    private int phoneNo;
+    private long phoneNo;
     private String status;
     private RaddressBean raddressBean;
 
@@ -71,11 +71,11 @@ public class ReferenceBean {
         this.email = email;
     }
 
-    public int getPhoneNo() {
+    public long getPhoneNo() {
         return phoneNo;
     }
 
-    public void setPhoneNo(int phoneNo) {
+    public void setPhoneNo(long phoneNo) {
         this.phoneNo = phoneNo;
     }
     

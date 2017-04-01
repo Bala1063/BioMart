@@ -20,6 +20,11 @@ public class PersonalDetailsBean {
         return storeName;
     }
 
+    @Override
+    public String toString() {
+        return  userId + "," + userName + "," + phoneNo + "," + emailId + "," + storeName + "," + pAddressBean.toString();
+    }
+
     public void setStoreName(String storeName) {
         this.storeName = storeName;
     }

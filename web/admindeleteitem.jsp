@@ -95,7 +95,7 @@ and open the template in the editor.
                                 </li>
                                 <li >
                                     <a href=""> <i class="fa fa-pencil-square-o"></i> Salesman<i class="fa arrow"></i> </a>
-                                    <ul><li > <a href="adminaddsales.html">
+                                    <ul><li > <a href="adminaddsales.jsp">
                                                 Add Salesman
                                             </a> </li>
                                         <li > <a href="admineditsales.html">

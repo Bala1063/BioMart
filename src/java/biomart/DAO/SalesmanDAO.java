@@ -5,12 +5,10 @@
  */
 package biomart.DAO;
 
-import biomart.Bean.CashBean;
 import biomart.Bean.PersonalDetailsBean;
 import biomart.Util.Util;
 import java.util.List;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
@@ -24,7 +22,7 @@ public class SalesmanDAO {
         Session session = Util.getSessionFactory().openSession();
         Criteria criteria = session.createCriteria(PersonalDetailsBean.class);
         criteria.add(Restrictions.eq("District", district));
-        criteria.add(Restrictions.eq("Type", "R"));
+        criteria.add(Restrictions.eq("type", "R"));
         List<PersonalDetailsBean> personalDetailsBeans = criteria.list();
         session.close();
         return personalDetailsBeans;
@@ -33,18 +31,28 @@ public class SalesmanDAO {
     public PersonalDetailsBean viewSalesmanDetails(String userId) {
         Session session = Util.getSessionFactory().openSession();
         Criteria criteria = session.createCriteria(PersonalDetailsBean.class);
-        criteria.add(Restrictions.eq("User_id", userId));
-        PersonalDetailsBean personalDetailsBeans = (PersonalDetailsBean)criteria.list().get(0);
+        criteria.add(Restrictions.eq("userId", userId));
+        PersonalDetailsBean personalDetailsBean = (PersonalDetailsBean)criteria.list().get(0);
         session.close();
-        return personalDetailsBeans;
+        return personalDetailsBean;
     }
     public List<PersonalDetailsBean> getAllSalesman()
     {
         Session session=Util.getSessionFactory().openSession();
         Criteria criteria=session.createCriteria(PersonalDetailsBean.class);
-        criteria.add(Restrictions.eq("Type","S"));
+        criteria.add(Restrictions.eq("type",'S'+""));
         List<PersonalDetailsBean> personalDetailsBeans=criteria.list();
         session.close();
         return personalDetailsBeans;
+    }
+    public String getSalesmanId(String userName)
+    {
+        Session session = Util.getSessionFactory().openSession();
+        Criteria criteria = session.createCriteria(PersonalDetailsBean.class);
+        criteria.add(Restrictions.eq("userName", userName));
+        PersonalDetailsBean personalDetailsBeans = (PersonalDetailsBean)criteria.list().get(0);
+        session.close();
+        return personalDetailsBeans.getUserId();
+        
     }
 }

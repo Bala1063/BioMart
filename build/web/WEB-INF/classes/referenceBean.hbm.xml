@@ -11,9 +11,9 @@ and open the template in the editor.
       <generator class="assigned"/>
     </id>
     <property column="Name" name="name" type="string"/>
-    <property column="Phone_no" name="phoneNo" type="int"/>
+    <property column="Phone_no" name="phoneNo" type="long"/>
     <property column="Email_id" name="emailId" type="string"/>
     <property column="Status" name="status" type="string"/>
-    <one-to-one cascade="all" class="biomart.Bean.RaddressBean" lazy="false" name="addressBean"/>
+    <one-to-one cascade="all" class="biomart.Bean.RaddressBean" lazy="false" name="raddressBean"/>
   </class>
 </hibernate-mapping>

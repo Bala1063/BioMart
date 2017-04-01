@@ -8,7 +8,7 @@ public class RaddressBean {
     private String city;
     private String district;
     private String state;
-    private int pincode;
+    private long pincode;
     private PersonalDetailsBean ReferenceBean;
 
     public PersonalDetailsBean getReferenceBean() {
@@ -66,11 +66,11 @@ public class RaddressBean {
         this.state = state;
     }
 
-    public int getPincode() {
+    public long getPincode() {
         return pincode;
     }
 
-    public void setPincode(int pincode) {
+    public void setPincode(long pincode) {
         this.pincode = pincode;
     }
 

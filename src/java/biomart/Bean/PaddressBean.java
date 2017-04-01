@@ -8,11 +8,16 @@ public class PaddressBean {
     private String city;
     private String district;
     private String state;
-    private int pincode;
+    private long pincode;
     private PersonalDetailsBean personalDetailsBean;
 
     public PersonalDetailsBean getPersonalDetailsBean() {
         return personalDetailsBean;
+    }
+
+    @Override
+    public String toString() {
+        return doorNo + "," + street + "," + city + "," + district + "," + state + "," + pincode;
     }
 
     public void setPersonalDetailsBean(PersonalDetailsBean personalDetailsBean) {
@@ -67,11 +72,11 @@ public class PaddressBean {
         this.state = state;
     }
 
-    public int getPincode() {
+    public long getPincode() {
         return pincode;
     }
 
-    public void setPincode(int pincode) {
+    public void setPincode(long pincode) {
         this.pincode = pincode;
     }
 

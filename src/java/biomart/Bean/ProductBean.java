@@ -7,7 +7,7 @@ public class ProductBean {
     private String productId;
     private String productName;
     private String description;
-    private int price;
+    private float price;
     List<ProductImageBean> imageBeans;
 
     public String getProductId() {
@@ -34,11 +34,11 @@ public class ProductBean {
         this.description = description;
     }
 
-    public int getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 
