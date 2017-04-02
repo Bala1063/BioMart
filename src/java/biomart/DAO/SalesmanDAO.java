@@ -54,4 +54,15 @@ public class SalesmanDAO {
         return personalDetailsBeans.getUserId();
         
     }
+     public String getSalesmanId(String userName,long phoneNo)
+    {
+        Session session = Util.getSessionFactory().openSession();
+        Criteria criteria = session.createCriteria(PersonalDetailsBean.class);
+        criteria.add(Restrictions.eq("userName", userName));
+        criteria.add(Restrictions.eq("phoneNo", phoneNo));
+        PersonalDetailsBean personalDetailsBeans = (PersonalDetailsBean)criteria.list().get(0);
+        session.close();
+        return personalDetailsBeans.getUserId();
+        
+    }
 }

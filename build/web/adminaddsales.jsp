@@ -105,7 +105,7 @@
                                         <li > <a href="admineditsales.jsp">
                                                 Edit Salesman Details
                                             </a> </li>
-                                        <li > <a href="admindeletesales.html">
+                                        <li > <a href="admindeletesales.jsp">
                                                 Remove Salesman
                                             </a> </li></ul>
                                 </li>

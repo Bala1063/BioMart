@@ -15,8 +15,10 @@ import biomart.Bean.ReferenceBean;
 import biomart.Util.Util;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -27,10 +29,25 @@ public class AdminDAO {
 
     public String removeUserDetails(String userName, long phoneNo) {
         Session session = Util.getSessionFactory().openSession();
-        Query query = session.createQuery("delete from PersonalDetailsBean where userName=:un and phoneNo=:pno");
-        query.setParameter("un", userName);
-        query.setParameter("pno", phoneNo);
-        session.close();
+        System.out.println(userName + "" + phoneNo);
+        String userId = new SalesmanDAO().getSalesmanId(userName, phoneNo);
+        System.out.println(userId);
+        Transaction t = null;
+        try {
+            t = session.beginTransaction();
+            PersonalDetailsBean personalDetailsBean=(PersonalDetailsBean)session.load(PersonalDetailsBean.class, userId);
+            System.out.println(personalDetailsBean.toString());
+            session.delete(personalDetailsBean);
+            t.commit();
+        } catch (HibernateException e) {
+            if (t != null) {
+                t.rollback();
+            }
+            e.printStackTrace();
+            return "fail";
+        } finally {
+            session.close();
+        }
         return "success";
     }
 
@@ -126,13 +143,13 @@ public class AdminDAO {
         return null;
 
     }
-    public List<ProductBean> getAllProdudctNames()
-    {
+
+    public List<ProductBean> getAllProdudctNames() {
         Session session = Util.getSessionFactory().openSession();
         Query query = session.createQuery("From ProductBean");
         List<ProductBean> productBeans = query.list();
         session.close();
         return productBeans;
-        
+
     }
 }

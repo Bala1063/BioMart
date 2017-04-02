@@ -46,7 +46,7 @@ Contributor(s):
     <property name="hibernate.connection.url">jdbc:oracle:thin:@localhost:1521:XE</property>
     <property name="hibernate.connection.username">biomart</property>
     <property name="hibernate.connection.password">biomart</property>
-    <property name="hibernate.hbm2ddl.auto">update</property>
+    <property name="hibernate.hbm2ddl.auto">create-drop</property>
     <mapping resource="login.hbm.xml"/>
     <mapping resource="productBean.hbm.xml"/>
     <mapping resource="productImageBean.hbm.xml"/>

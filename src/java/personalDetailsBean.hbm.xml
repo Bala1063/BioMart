@@ -15,19 +15,19 @@ and open the template in the editor.
         <property column="Phone_no" name="phoneNo" type="long"/>
         <property column="Email_id" name="emailId" type="string"/>
         <property column="Store_name" name="storeName" type="string"/>
-        <one-to-one cascade="all" class="biomart.Bean.PaddressBean" lazy="false" name="pAddressBean"/>
-        <one-to-one cascade="all" class="biomart.Bean.CashBean" lazy="false" name="cashBean"/>
+        <one-to-one cascade="save-update,delete,delete-orphan" class="biomart.Bean.PaddressBean" lazy="false" name="pAddressBean"/>
+        <one-to-one cascade="save-update,delete,delete-orphan" class="biomart.Bean.CashBean" lazy="false" name="cashBean"/>
         <list cascade="all" lazy="false" name="paymentDetailsBeans" table="biomart.beanClass.PaymentDetailsBean">
             <key column="User_id"/>
             <index column="type"/>
             <one-to-many class="biomart.Bean.PaymentDetailsBean"/>
         </list>
-        <list cascade="all" lazy="false" name="checkBeans" table="biomart.beanClass.CheckBean">
+        <list cascade="save-update,delete,delete-orphan" lazy="false" name="checkBeans" table="biomart.beanClass.CheckBean">
             <key column="User_id"/>
             <index column="type"/>
             <one-to-many class="biomart.Bean.CheckBean"/>
         </list>
-        <list cascade="all" lazy="false" name="orderBeans" table="biomart.beanClass.OrderBean" >
+        <list cascade="save-update,delete,delete-orphan" lazy="false" name="orderBeans" table="biomart.beanClass.OrderBean" >
             <key column="User_id"/>
             <index column="type"/>
             <one-to-many class="biomart.Bean.OrderBean"/>

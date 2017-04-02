@@ -119,6 +119,7 @@ public class AdminSalesmanServlet extends HttpServlet {
         } else if (operation.equalsIgnoreCase("remove")) {
             String salesmanname = request.getParameter("username");
             long mobileno = Long.parseLong(request.getParameter("mobileno"));
+        
             if (new AdminDAO().removeUserDetails(salesmanname, mobileno).equalsIgnoreCase("success")) {
                 request.setAttribute("status", "Salesman Removed");
                 request.getRequestDispatcher("admindeletesales.jsp").forward(request, response);

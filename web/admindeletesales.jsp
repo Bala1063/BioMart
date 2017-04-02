@@ -142,7 +142,7 @@
                                         <li > <a href="admineditsales.jsp">
                                                 Edit Salesman Details
                                             </a> </li>
-                                        <li class="active"> <a href="admindeletesales.html">
+                                        <li class="active"> <a href="admindeletesales.jsp">
                                                 Remove Salesman
                                             </a> </li></ul>
                                 </li>
