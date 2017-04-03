@@ -1,26 +1,18 @@
 <%-- 
-    Document   : admindeleteitem
-    Created on : Mar 19, 2017, 7:03:55 PM
+    Document   : adminaddret
+    Created on : Apr 2, 2017, 6:09:51 PM
     Author     : bala
 --%>
 
-<%@page import="biomart.DAO.AdminDAO"%>
-<%@page import="biomart.Bean.ProductBean"%>
-<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-
+<!doctype html>
 <html class="no-js" lang="en">
 
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title> Bio Mart</title>
+        <title> Bio Mart
+        </title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -39,9 +31,21 @@ and open the template in the editor.
                 document.write('<link rel="stylesheet" id="theme-style" href="css/app.css">');
             }
         </script>
+        <script>
+            function checkStatus()
+            {
+                var x = document.getElementById("status").value;
+                if (x != "")
+                {
+                    document.getElementById("status").value = "";
+                    window.alert(x);
+                }
+            }
+
+        </script>
     </head>
 
-    <body>
+    <body onload="checkStatus()">
         <div class="main-wrapper">
             <div class="app" id="app">
                 <header class="header">
@@ -58,12 +62,12 @@ and open the template in the editor.
                                         Admin
                                     </span> </a>
                                 <div class="dropdown-menu profile-dropdown-menu" aria-labelledby="dropdownMenu1">
-                                     <form action="LoginServlet" method="post" id="f1">                            
-                                    <a class="dropdown-item" href="passwordchange.jsp"> <i class="fa fa-gear icon"></i>  Change Password </a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="javascript:{}" onclick="document.getElementById('f1').submit();">  <i class="fa fa-power-off icon"></i> Logout </a>
-                                    <input type="hidden" name="operation" value="logout" >
-                                </div></form>
+                                    <form action="LoginServlet" method="post" id="f1">                            
+                                        <a class="dropdown-item" href="passwordchange.jsp"> <i class="fa fa-gear icon"></i>  Change Password </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="javascript:{}" onclick="document.getElementById('f1').submit();">  <i class="fa fa-power-off icon"></i> Logout </a>
+                                        <input type="hidden" name="operation" value="logout" >
+                                        </div></form>
                             </li>
                         </ul>
                     </div>
@@ -79,7 +83,7 @@ and open the template in the editor.
                                 <li>
                                     <a href="table.html"> <i class="fa fa-home"></i>Payment Status</a>
                                 </li>
-                                <li class="active open">
+                                <li>
                                     <a href=""> <i class="fa fa-th-large"></i> Items Manager <i class="fa arrow"></i> </a>
                                     <ul>
                                         <li> <a href="adminadditem.html">
@@ -88,7 +92,7 @@ and open the template in the editor.
                                         <li> <a href="adminedititem.html">
                                                 Edit item
                                             </a> </li>
-                                        <li class="active"> <a href="admindeleteitem.jsp">
+                                        <li> <a href="admindeleteitem.jsp">
                                                 Delete Item
                                             </a> </li>
                                     </ul>
@@ -105,9 +109,9 @@ and open the template in the editor.
                                                 Remove Salesman
                                             </a> </li></ul>
                                 </li>
-                                <li >
+                                <li class="active open">
                                     <a href=""> <i class="fa fa-user"></i> Retailer<i class="fa arrow"></i> </a>
-                                    <ul><li > <a href="adminaddret.jsp">
+                                    <ul><li class="active"> <a href="adminaddret.jsp">
                                                 Add Retailer
                                             </a> </li>
                                         <li > <a href="admineditret.jsp">
@@ -169,34 +173,61 @@ and open the template in the editor.
                     </footer>
                 </aside>
                 <div class="sidebar-overlay" id="sidebar-overlay"></div>
-                <article class="content items-list-page">
+                <article class="content item-editor-page">
                     <div class="title-block">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h3 class="title"> Delete Item
+                        <h3 class="title"> Add new Retailer <span class="sparkline bar" data-type="bar"></span> </h3>
+                    </div>
+                    <form action="AdminRetailerServlet" method="post">
+                        <div class="card card-block">
+                            <div class="form-group row"> <label class="col-sm-2 form-control-label text-xs-right">
+                                    Name:
+                                </label>
+                                <div class="col-sm-10"> <input type="text" class="form-control boxed" placeholder="Retailer Name" name="username" id="username"> </div>
+                            </div>
+                            <div class="form-group row"> <label class="col-sm-2 form-control-label text-xs-right">
+                                    Store Name:
+                                </label>
+                                <div class="col-sm-10"> <input type="text" class="form-control boxed" placeholder="Store Name" name="storename" id="storename"> </div>
+                            </div>
+                            <div class="form-group row"> <label class="col-sm-2 form-control-label text-xs-right">
+                                    Mobile No:
+                                </label>
+                                <div class="col-sm-10"> <input type="text" class="form-control boxed" placeholder="Mobile No." name="mobileno" id="mobileno"> </div>
+                            </div>
+                            <div class="form-group row"> <label class="col-sm-2 form-control-label text-xs-right">
+                                    E-mail:
+                                </label>
+                                <div class="col-sm-10"> <input type="email" class="form-control boxed" placeholder="E-mail" name="email" id="email"> </div>
+                            </div>
+                            <div class="form-group row"> 
+                                <label class="col-sm-2 form-control-label text-xs-right">
+                                    Address:
+                                </label>
+                                <div class="col-sm-2"> <input type="text" class="form-control boxed" placeholder="Door No" name="doorno" id="doorno"> </div>
+                                <div class="col-sm-4"> <input type="text" class="form-control boxed" placeholder="Street Name" name="streetname" id="streetname"> </div>
+                                <div class="col-sm-4"> <input type="text" class="form-control boxed" placeholder="City" name="city" id="city"> </div>
+                            </div>
+                            <div class="form-group row"> 
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-4"> <input type="text" class="form-control boxed" placeholder="District" name="district" id="district"> </div>
+                                <div class="col-sm-3"> <input type="text" class="form-control boxed" placeholder="State" name="state" id="state"> </div>
+                                <div class="col-sm-3"> <input type="text" class="form-control boxed" placeholder="Pincode" name="pincode" id="pincode"> </div>
+                            </div>
+                            <%if (request.getAttribute("status") != null) {%>
+                            <input type="hidden" name="status" id="status" value="<%=(String) request.getAttribute("status")%>"/>
+                            <%request.setAttribute("status", null);
+                                        } else {%>
+                            <input type="hidden" name="status" id="status" />
+                            <%}%>
 
-                                </h3>
+                            <div class="form-group row">
+                                <div class="col-sm-10 col-sm-offset-2"> <button type="submit" value="add" name="operation" class="btn btn-primary">
+                                        Submit
+                                    </button> 
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">  
-                        <div class="col-md-8">  
-                            <input class="form-control form-control-lg" type="text" list="productid" placeholder="Product Name"></div>
-                        <datalist id="productid">
-                            <%List<ProductBean> productBeans = new AdminDAO().getAllProdudctNames();
-                                       if (productBeans.size() != 0) {
-                                           for (ProductBean productBean : productBeans) {%> 
-                            <option><%=productBean.getProductName()%></option>
-                            <%}
-                                  } else { %>
-                                  <option >No Products </option>
-                            <%}%>
-                        </datalist>   </div><br>
-                    <div class="form-group row">
-                        <div class="col-sm-10 col-sm-offset-2"> <button type="submit" class="btn btn-primary">
-                                Delete
-                            </button> </div>
-                    </div>
+                    </form>
 
                 </article>
             </div>
@@ -231,4 +262,3 @@ and open the template in the editor.
     </body>
 
 </html>
-

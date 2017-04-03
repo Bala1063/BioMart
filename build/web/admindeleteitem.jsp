@@ -107,10 +107,10 @@ and open the template in the editor.
                                 </li>
                                 <li >
                                     <a href=""> <i class="fa fa-user"></i> Retailer<i class="fa arrow"></i> </a>
-                                    <ul><li > <a href="adminaddret.html">
-                                                Add retailerman
+                                    <ul><li > <a href="adminaddret.jsp">
+                                                Add Retailer
                                             </a> </li>
-                                        <li > <a href="admineditret.html">
+                                        <li > <a href="admineditret.jsp">
                                                 Edit Retailer Details
                                             </a> </li>
                                         <li > <a href="adminrefer.html">

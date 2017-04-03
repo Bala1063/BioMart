@@ -34,15 +34,15 @@
             var req;
             function checkStatus()
             {
-                var x=document.getElementById("status").value;
-                if(x!="")
+                var x = document.getElementById("status").value;
+                if (x != "")
                 {
-                    document.getElementById("status").value="";
+                    document.getElementById("status").value = "";
                     window.alert(x);
                 }
             }
             function get()
-            {    
+            {
                 if (window.XMLHttpRequest) {
                     return  new XMLHttpRequest( );
                 } else if (window.ActiveXObject)
@@ -51,7 +51,8 @@
                 }
             }
             function namelist()
-            {   checkStatus();
+            {
+                checkStatus();
                 req = get();
                 var url = "AdminSalesmanServlet?operation=" + "namelist";
                 req.onreadystatechange = function () {
@@ -72,15 +73,28 @@
                     if (this.readyState == 4 && this.status == 200) {
 
                         var details = this.responseText.split(",");
-                        document.getElementById("userid").value = details[0];
-                        document.getElementById("mobileno").value = details[2];
-                        document.getElementById("email").value = details[3];
-                        document.getElementById("doorno").value = details[5];
-                        document.getElementById("streetname").value = details[6];
-                        document.getElementById("city").value = details[7];
-                        document.getElementById("district").value = details[8];
-                        document.getElementById("state").value = details[9];
-                        document.getElementById("pincode").value = details[10];
+                        if (details.length > 1) {
+                            document.getElementById("userid").value = details[0];
+                            document.getElementById("mobileno").value = details[2];
+                            document.getElementById("email").value = details[3];
+                            document.getElementById("doorno").value = details[5];
+                            document.getElementById("streetname").value = details[6];
+                            document.getElementById("city").value = details[7];
+                            document.getElementById("district").value = details[8];
+                            document.getElementById("state").value = details[9];
+                            document.getElementById("pincode").value = details[10];
+                        } else
+                        {
+                            document.getElementById("userid").value = "";
+                            document.getElementById("mobileno").value = "";
+                            document.getElementById("email").value = "";
+                            document.getElementById("doorno").value = "";
+                            document.getElementById("streetname").value = "";
+                            document.getElementById("city").value = "";
+                            document.getElementById("district").value = "";
+                            document.getElementById("state").value = "";
+                            document.getElementById("pincode").value = "";
+                        }
                     }
                 };
                 req.open("POST", url, true);
@@ -157,10 +171,10 @@
                                 </li>
                                 <li >
                                     <a href=""> <i class="fa fa-user"></i> Retailer<i class="fa arrow"></i> </a>
-                                    <ul><li > <a href="adminaddret.html">
-                                                Add retailerman
+                                    <ul><li > <a href="adminaddret.jsp">
+                                                Add Retailer
                                             </a> </li>
-                                        <li > <a href="admineditret.html">
+                                        <li > <a href="admineditret.jsp">
                                                 Edit Retailer Details
                                             </a> </li>
                                         <li > <a href="adminrefer.html">
@@ -267,7 +281,7 @@
                         <%if (request.getAttribute("status") != null) {%>
                         <input type="hidden" name="status" id="status" value="<%=(String) request.getAttribute("status")%>"/>
                         <%request.setAttribute("status", null);
-                    } else {%>
+                        } else {%>
                         <input type="hidden" name="status" id="status" />
                         <%}%>
                         <div class="form-group row">

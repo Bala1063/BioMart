@@ -30,39 +30,43 @@ public class SalesmanDAO {
 
     public PersonalDetailsBean viewSalesmanDetails(String userId) {
         Session session = Util.getSessionFactory().openSession();
-        
-        PersonalDetailsBean personalDetailsBean = (PersonalDetailsBean)session.get(PersonalDetailsBean.class, userId);
+        PersonalDetailsBean personalDetailsBean = (PersonalDetailsBean) session.get(PersonalDetailsBean.class, userId);
         session.close();
         return personalDetailsBean;
     }
-    public List<PersonalDetailsBean> getAllSalesman()
-    {
-        Session session=Util.getSessionFactory().openSession();
-        Criteria criteria=session.createCriteria(PersonalDetailsBean.class);
-        criteria.add(Restrictions.eq("type",'S'+""));
-        List<PersonalDetailsBean> personalDetailsBeans=criteria.list();
+
+    public List<PersonalDetailsBean> getAllSalesman() {
+        Session session = Util.getSessionFactory().openSession();
+        Criteria criteria = session.createCriteria(PersonalDetailsBean.class);
+        criteria.add(Restrictions.eq("type", 'S' + ""));
+        List<PersonalDetailsBean> personalDetailsBeans = criteria.list();
         session.close();
         return personalDetailsBeans;
     }
-    public String getSalesmanId(String userName)
-    {
+
+    public String getSalesmanId(String userName) {
         Session session = Util.getSessionFactory().openSession();
         Criteria criteria = session.createCriteria(PersonalDetailsBean.class);
         criteria.add(Restrictions.eq("userName", userName));
-        PersonalDetailsBean personalDetailsBeans = (PersonalDetailsBean)criteria.list().get(0);
+        PersonalDetailsBean personalDetailsBean = null;
+        if (!criteria.list().isEmpty()) {
+            personalDetailsBean = (PersonalDetailsBean) criteria.list().get(0);
+            session.close();
+            return personalDetailsBean.getUserId();
+        }
         session.close();
-        return personalDetailsBeans.getUserId();
-        
+        return null;
+
     }
-     public String getSalesmanId(String userName,long phoneNo)
-    {
+
+    public String getSalesmanId(String userName, long phoneNo) {
         Session session = Util.getSessionFactory().openSession();
         Criteria criteria = session.createCriteria(PersonalDetailsBean.class);
         criteria.add(Restrictions.eq("userName", userName));
         criteria.add(Restrictions.eq("phoneNo", phoneNo));
-        PersonalDetailsBean personalDetailsBeans = (PersonalDetailsBean)criteria.list().get(0);
+        PersonalDetailsBean personalDetailsBeans = (PersonalDetailsBean) criteria.list().get(0);
         session.close();
         return personalDetailsBeans.getUserId();
-        
+
     }
 }

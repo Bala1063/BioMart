@@ -9,8 +9,8 @@ import biomart.Bean.PaddressBean;
 import biomart.Bean.PersonalDetailsBean;
 import biomart.DAO.AdminDAO;
 import biomart.DAO.CommonDAO;
-import biomart.DAO.SalesmanDAO;
-import biomart.IdGenerator.SalesmanIdGenerator;
+import biomart.DAO.RetailerDAO;
+import biomart.IdGenerator.RetailerIdGenerator;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -23,25 +23,25 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author bala
  */
-public class AdminSalesmanServlet extends HttpServlet {
+public class AdminRetailerServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         String operation = request.getParameter("operation");
         if (operation.equalsIgnoreCase("add") || operation.equalsIgnoreCase("update")) {
             PersonalDetailsBean personalDetailsBean = null;
             if (operation.equalsIgnoreCase("add")) {
                 personalDetailsBean = new PersonalDetailsBean();
-                personalDetailsBean.setUserId(new SalesmanIdGenerator().generateSalesmanId(request.getParameter("username")));
+                personalDetailsBean.setUserId(new RetailerIdGenerator().generateRetailerId(request.getParameter("username")));
             } else if (operation.equalsIgnoreCase("update")) {
-                personalDetailsBean = new SalesmanDAO().viewSalesmanDetails(request.getParameter("userid"));
+                personalDetailsBean = new RetailerDAO().viewRetailerDetails(request.getParameter("userid"));
             }
             personalDetailsBean.setUserName(request.getParameter("username"));
-            personalDetailsBean.setType("S");
+            personalDetailsBean.setType("R");
             personalDetailsBean.setEmailId(request.getParameter("email"));
             personalDetailsBean.setPhoneNo(Long.parseLong(request.getParameter("mobileno")));
+            personalDetailsBean.setStoreName(request.getParameter("storename"));
             PaddressBean paddressBean = null;
             if (operation.equalsIgnoreCase("add")) {
                 paddressBean = new PaddressBean();
@@ -59,65 +59,48 @@ public class AdminSalesmanServlet extends HttpServlet {
                 personalDetailsBean.setpAddressBean(paddressBean);
             }
             if (new CommonDAO().addOrUpdateDetails(personalDetailsBean).equalsIgnoreCase("success")) {
-
                 if (operation.equalsIgnoreCase("add")) {
-                    request.setAttribute("status", "Salesman Added");
-                    request.getRequestDispatcher("adminaddsales.jsp").forward(request, response);
+                    request.setAttribute("status", "Retailer Added");
+                    request.getRequestDispatcher("adminaddret.jsp").forward(request, response);
                 } else if (operation.equalsIgnoreCase("update")) {
-                    request.setAttribute("status", "Salesman Updated");
-                    request.getRequestDispatcher("admineditsales.jsp").forward(request, response);
+                    request.setAttribute("status", "Retailer Updated");
+                    request.getRequestDispatcher("admineditret.jsp").forward(request, response);
                 }
             }
-        } else if (operation.equalsIgnoreCase("namelist")) {
+        } else if (operation.equalsIgnoreCase("storelist")) {
             response.setContentType("text/html;charset=UTF-8");
             PrintWriter out = response.getWriter();
-            String salesmannamelist = "";
+            String storelist = "";
             try {
-                List<PersonalDetailsBean> personalDetailsBeans = new SalesmanDAO().getAllSalesman();
+                List<PersonalDetailsBean> personalDetailsBeans = new RetailerDAO().getAllRetailers();
                 for (PersonalDetailsBean personalDetailsBean : personalDetailsBeans) {
-                    salesmannamelist += "<option>" + personalDetailsBean.getUserName() + "</option>";
+                    storelist += "<option>" + personalDetailsBean.getStoreName() + "</option>";
                 }
-                out.println(salesmannamelist);
+                 out.println(storelist);
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-        } else if (operation.equalsIgnoreCase("getDetails")) {
+        }else if (operation.equalsIgnoreCase("getDetails")) {
             response.setContentType("text/html;charset=UTF-8");
             PrintWriter out = response.getWriter();
             String details = "";
-            String userName = request.getParameter("userName");
+            String storeName = request.getParameter("storename");
+                      
             try {
-                SalesmanDAO salesmanDAO = new SalesmanDAO();
-                String userId=salesmanDAO.getSalesmanId(userName);
-                if(userId!=null){
-                PersonalDetailsBean personalDetailsBean = salesmanDAO.viewSalesmanDetails(userId);
-                details = personalDetailsBean.toString();
-                }
+                RetailerDAO retailerDAO=new RetailerDAO();
+                String retailerId=retailerDAO.getRetailerId(storeName);
+                if(retailerId!=null){
+                PersonalDetailsBean personalDetailsBean = retailerDAO.viewRetailerDetails(retailerId);
+                details = personalDetailsBean.toString();}
+                System.out.println(details);
                 out.println(details);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else if (operation.equalsIgnoreCase("nolist")) {
-            response.setContentType("text/html;charset=UTF-8");
-            PrintWriter out = response.getWriter();
-            String nolist = "";
-            String salesmanname = request.getParameter("salesmanname");
-            try {
-                List<PersonalDetailsBean> personalDetailsBeans = new SalesmanDAO().getAllSalesman();
-                for (PersonalDetailsBean personalDetailsBean : personalDetailsBeans) {
-                    if (salesmanname.equalsIgnoreCase(personalDetailsBean.getUserName())) {
-                        nolist += "<option>" + personalDetailsBean.getPhoneNo() + "</option>";
-                    }
-                }
-                out.println(nolist);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        } else if (operation.equalsIgnoreCase("remove")) {
+            
+    }
+        else if (operation.equalsIgnoreCase("remove")) {
             String salesmanname = request.getParameter("username");
             long mobileno = Long.parseLong(request.getParameter("mobileno"));
 
@@ -127,6 +110,6 @@ public class AdminSalesmanServlet extends HttpServlet {
             }
 
         }
-    }
-
+        
+}
 }

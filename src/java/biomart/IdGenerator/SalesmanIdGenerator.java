@@ -33,7 +33,7 @@ public class SalesmanIdGenerator  {
                 resultSet = statement.executeQuery("Select Salesman_Seq.nextval from dual");
             } catch (Exception e) {
                 statement.execute("create sequence Salesman_Seq start with 1 increment by 1 nocycle nocache");
-                resultSet = statement.executeQuery("Select Salesman_Seq.nexttval from dual");
+                resultSet = statement.executeQuery("Select Salesman_Seq.nextval from dual");
             }
             if (resultSet.next()) {
                 x = (Integer) resultSet.getInt(1);

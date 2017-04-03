@@ -17,24 +17,36 @@ import org.hibernate.criterion.Restrictions;
  * @author bala
  */
 public class RetailerDAO {
-    public PersonalDetailsBean viewRetailerDetails(String userId)
-    {
-        Session session=Util.getSessionFactory().openSession();
-        Criteria criteria=session.createCriteria(PersonalDetailsBean.class);
-        criteria.add(Restrictions.eq("User_id", userId));
-        PersonalDetailsBean personalDetailsBean=(PersonalDetailsBean)criteria.list().get(0);
+
+    public PersonalDetailsBean viewRetailerDetails(String userId) {
+        Session session = Util.getSessionFactory().openSession();
+        PersonalDetailsBean personalDetailsBean = (PersonalDetailsBean) session.get(PersonalDetailsBean.class, userId);
         session.close();
         return personalDetailsBean;
     }
-    
-    public List<PersonalDetailsBean> getAllRetailers()
-    {
-        Session session=Util.getSessionFactory().openSession();
-        Criteria criteria=session.createCriteria(PersonalDetailsBean.class);
-        criteria.add(Restrictions.eq("Type","R"));
-        List<PersonalDetailsBean> personalDetailsBeans=criteria.list();
+
+    public List<PersonalDetailsBean> getAllRetailers() {
+        Session session = Util.getSessionFactory().openSession();
+        Criteria criteria = session.createCriteria(PersonalDetailsBean.class);
+        criteria.add(Restrictions.eq("type", "R"));
+        List<PersonalDetailsBean> personalDetailsBeans = criteria.list();
         session.close();
         return personalDetailsBeans;
     }
-    
+
+    public String getRetailerId(String storeName) {
+
+        Session session = Util.getSessionFactory().openSession();
+        Criteria criteria = session.createCriteria(PersonalDetailsBean.class);
+        criteria.add(Restrictions.eq("storeName", storeName));
+        PersonalDetailsBean personalDetailsBean = null;
+        if (!criteria.list().isEmpty()) {
+            personalDetailsBean = (PersonalDetailsBean) criteria.list().get(0);
+            session.close();
+            return personalDetailsBean.getUserId();
+        }
+          session.close();
+        return null;
+    }
+
 }

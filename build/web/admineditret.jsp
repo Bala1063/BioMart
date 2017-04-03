@@ -1,26 +1,17 @@
 <%-- 
-    Document   : admindeleteitem
-    Created on : Mar 19, 2017, 7:03:55 PM
+    Document   : admineditret
+    Created on : Apr 2, 2017, 8:28:08 PM
     Author     : bala
 --%>
 
-<%@page import="biomart.DAO.AdminDAO"%>
-<%@page import="biomart.Bean.ProductBean"%>
-<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-
+<!doctype html>
 <html class="no-js" lang="en">
 
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title> Bio Mart</title>
+        <title>Bio Mart</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -39,9 +30,84 @@ and open the template in the editor.
                 document.write('<link rel="stylesheet" id="theme-style" href="css/app.css">');
             }
         </script>
+        <script>
+            var req;
+            function checkStatus()
+            {
+                var x = document.getElementById("status").value;
+                if (x != "")
+                {
+                    document.getElementById("status").value = "";
+                    window.alert(x);
+                }
+            }
+            function get()
+            {
+                if (window.XMLHttpRequest) {
+                    return  new XMLHttpRequest( );
+                } else if (window.ActiveXObject)
+                {
+                    return new ActiveXObject("Microsoft.XMLHTTP");
+                }
+            }
+            function storelist()
+            {
+                checkStatus();
+                req = get();
+                var url = "AdminRetailerServlet?operation=" + "storelist";
+                req.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("storenameid").innerHTML =
+                                this.responseText;
+                    }
+                };
+                req.open("POST", url, true);
+                req.send(null);
+            }
+            function getDetails(storename)
+            {
+                req = get();
+                var url = "AdminRetailerServlet?operation=getDetails&&storename=" + storename;
+                req.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var details = this.responseText.split(",");
+                       
+                        if(details.length>1){
+                        document.getElementById("userid").value = details[0];
+                        document.getElementById("username").value = details[1];
+                        document.getElementById("mobileno").value = details[2];
+                        document.getElementById("email").value = details[3];
+                        document.getElementById("doorno").value = details[5];
+                        document.getElementById("streetname").value = details[6];
+                        document.getElementById("city").value = details[7];
+                        document.getElementById("district").value = details[8];
+                        document.getElementById("state").value = details[9];
+                        document.getElementById("pincode").value = details[10];
+                    }
+                    else
+                    {
+                         document.getElementById("userid").value = "";
+                        document.getElementById("username").value = "";
+                        document.getElementById("mobileno").value = "";
+                        document.getElementById("email").value = "";
+                        document.getElementById("doorno").value = "";
+                        document.getElementById("streetname").value = "";
+                        document.getElementById("city").value = "";
+                        document.getElementById("district").value = "";
+                        document.getElementById("state").value = "";
+                        document.getElementById("pincode").value = "";
+                    }
+                    }
+                };
+                req.open("POST", url, true);
+                req.send(null);
+
+            }
+
+        </script>
     </head>
 
-    <body>
+    <body onload="storelist()">
         <div class="main-wrapper">
             <div class="app" id="app">
                 <header class="header">
@@ -58,12 +124,12 @@ and open the template in the editor.
                                         Admin
                                     </span> </a>
                                 <div class="dropdown-menu profile-dropdown-menu" aria-labelledby="dropdownMenu1">
-                                     <form action="LoginServlet" method="post" id="f1">                            
-                                    <a class="dropdown-item" href="passwordchange.jsp"> <i class="fa fa-gear icon"></i>  Change Password </a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="javascript:{}" onclick="document.getElementById('f1').submit();">  <i class="fa fa-power-off icon"></i> Logout </a>
-                                    <input type="hidden" name="operation" value="logout" >
-                                </div></form>
+                                    <form action="LoginServlet" method="post" id="f1">                            
+                                        <a class="dropdown-item" href="passwordchange.jsp"> <i class="fa fa-gear icon"></i>  Change Password </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="javascript:{}" onclick="document.getElementById('f1').submit();">  <i class="fa fa-power-off icon"></i> Logout </a>
+                                        <input type="hidden" name="operation" value="logout" >
+                                        </div></form>
                             </li>
                         </ul>
                     </div>
@@ -79,7 +145,7 @@ and open the template in the editor.
                                 <li>
                                     <a href="table.html"> <i class="fa fa-home"></i>Payment Status</a>
                                 </li>
-                                <li class="active open">
+                                <li>
                                     <a href=""> <i class="fa fa-th-large"></i> Items Manager <i class="fa arrow"></i> </a>
                                     <ul>
                                         <li> <a href="adminadditem.html">
@@ -88,7 +154,7 @@ and open the template in the editor.
                                         <li> <a href="adminedititem.html">
                                                 Edit item
                                             </a> </li>
-                                        <li class="active"> <a href="admindeleteitem.jsp">
+                                        <li> <a href="admindeleteitem.jsp">
                                                 Delete Item
                                             </a> </li>
                                     </ul>
@@ -105,12 +171,12 @@ and open the template in the editor.
                                                 Remove Salesman
                                             </a> </li></ul>
                                 </li>
-                                <li >
+                                <li class="active open">
                                     <a href=""> <i class="fa fa-user"></i> Retailer<i class="fa arrow"></i> </a>
                                     <ul><li > <a href="adminaddret.jsp">
                                                 Add Retailer
                                             </a> </li>
-                                        <li > <a href="admineditret.jsp">
+                                        <li class="active"> <a href="admineditret.jsp">
                                                 Edit Retailer Details
                                             </a> </li>
                                         <li > <a href="adminrefer.html">
@@ -132,7 +198,7 @@ and open the template in the editor.
                                     </ul>
                                 </li>
                                 <li>
-                                    <a href=""> <i class="fa fa-envelope"></i> Cheque Status <i class="fa arrow"></i> </a>
+                                    <a href=""> <i class="fa fa-envelope"></i> Cheque Status <i class="fa arrow"></i>  </a>
                                     <ul>
                                         <li> <a href="adminchequestatus.html">
                                                 Status Update
@@ -173,31 +239,63 @@ and open the template in the editor.
                     <div class="title-block">
                         <div class="row">
                             <div class="col-md-12">
-                                <h3 class="title"> Delete Item
+                                <h3 class="title"> Edit Retailer Details
 
                                 </h3>
                             </div>
                         </div>
                     </div>
-                    <div class="row">  
-                        <div class="col-md-8">  
-                            <input class="form-control form-control-lg" type="text" list="productid" placeholder="Product Name"></div>
-                        <datalist id="productid">
-                            <%List<ProductBean> productBeans = new AdminDAO().getAllProdudctNames();
-                                       if (productBeans.size() != 0) {
-                                           for (ProductBean productBean : productBeans) {%> 
-                            <option><%=productBean.getProductName()%></option>
-                            <%}
-                                  } else { %>
-                                  <option >No Products </option>
-                            <%}%>
-                        </datalist>   </div><br>
-                    <div class="form-group row">
-                        <div class="col-sm-10 col-sm-offset-2"> <button type="submit" class="btn btn-primary">
-                                Delete
-                            </button> </div>
-                    </div>
-
+                    <form action="AdminRetailerServlet" method="post">
+                        <div class="form-group row"> <label class="col-sm-2 form-control-label text-xs-right">
+                                Store Name:
+                            </label>
+                            <div class="col-sm-10"> <input class="form-control form-control-lg" type="text" list="storenameid" placeholder="Select Store Name" name="storename" id="storename" oninput="getDetails(this.value)"> </div>
+                            <datalist id="storenameid">
+                            </datalist>  
+                        </div>
+                        <div class="form-group row"> <label class="col-sm-2 form-control-label text-xs-right">
+                                Name:
+                            </label>
+                            <div class="col-sm-10"> <input type="text" class="form-control boxed" placeholder="Retailer Name" name="username" id="username" value=""> </div>
+                        </div>
+                        <div class="form-group row"> <label class="col-sm-2 form-control-label text-xs-right">
+                                Mobile No:
+                            </label>
+                            <div class="col-sm-10"> <input type="text" class="form-control boxed" placeholder="Mobile NO." name="mobileno" id="mobileno" value=""> </div>
+                        </div>
+                        <div class="form-group row"> <label class="col-sm-2 form-control-label text-xs-right">
+                                E-mail:
+                            </label>
+                            <div class="col-sm-10"> <input type="text" class="form-control boxed" placeholder="email" name="email" id="email" value=""> </div>
+                        </div>
+                        <div class="form-group row"> 
+                            <label class="col-sm-2 form-control-label text-xs-right">
+                                Address:
+                            </label>
+                            <div class="col-sm-2"> <input type="text" class="form-control boxed" placeholder="Door No" name="doorno" id="doorno" value=""> </div>
+                            <div class="col-sm-4"> <input type="text" class="form-control boxed" placeholder="Street Name" name="streetname" id="streetname" value=""> </div>
+                            <div class="col-sm-4"> <input type="text" class="form-control boxed" placeholder="City" name="city" id="city" value=""> </div>
+                        </div>
+                        <div class="form-group row"> 
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-4"> <input type="text" class="form-control boxed" placeholder="District" name="district" id="district" value=""> </div>
+                            <div class="col-sm-3"> <input type="text" class="form-control boxed" placeholder="State" name="state" id="state" value=""> </div>
+                            <div class="col-sm-3"> <input type="text" class="form-control boxed" placeholder="Pincode" name="pincode" id="pincode" value=""> </div>
+                        </div>
+                        <input type="hidden"  id="userid" name="userid" value="" />
+                        <%if (request.getAttribute("status") != null) {%>
+                        <input type="hidden" name="status" id="status" value="<%=(String) request.getAttribute("status")%>"/>
+                        <%request.setAttribute("status", null);
+                        } else {%>
+                        <input type="hidden" name="status" id="status" />
+                        <%}%>
+                        <div class="form-group row">
+                            <div class="col-sm-10 col-sm-offset-2"> <button type="submit" value="update" name="operation" class="btn btn-primary">
+                                    Update
+                                </button> 
+                            </div>
+                        </div> 
+                    </form>
                 </article>
             </div>
         </div>
@@ -231,4 +329,3 @@ and open the template in the editor.
     </body>
 
 </html>
-

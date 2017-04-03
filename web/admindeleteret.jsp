@@ -1,3 +1,9 @@
+<%-- 
+    Document   : admindeleteret
+    Created on : Apr 3, 2017, 8:36:12 PM
+    Author     : bala
+--%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!doctype html>
 <html class="no-js" lang="en">
 
@@ -13,15 +19,35 @@
         <!-- Theme initialization -->
         <script>
             var themeSettings = (localStorage.getItem('themeSettings')) ? JSON.parse(localStorage.getItem('themeSettings')) :
-            {};
+                    {};
             var themeName = themeSettings.themeName || '';
             if (themeName)
             {
                 document.write('<link rel="stylesheet" id="theme-style" href="css/app-' + themeName + '.css">');
-            }
-            else
+            } else
             {
                 document.write('<link rel="stylesheet" id="theme-style" href="css/app.css">');
+            }
+        </script>
+        <script>
+            var req;
+            function checkStatus()
+            {
+                var x = document.getElementById("status").value;
+                if (x != "")
+                {
+                    document.getElementById("status").value = "";
+                    window.alert(x);
+                }
+            }
+            function get()
+            {
+                if (window.XMLHttpRequest) {
+                    return  new XMLHttpRequest( );
+                } else if (window.ActiveXObject)
+                {
+                    return new ActiveXObject("Microsoft.XMLHTTP");
+                }
             }
         </script>
     </head>
@@ -31,24 +57,24 @@
             <div class="app" id="app">
                 <header class="header">
                     <div class="header-block header-block-collapse hidden-lg-up"> <button class="collapse-btn" id="sidebar-collapse-btn">
-                <i class="fa fa-bars"></i>
-            </button> </div>
-                  
+                            <i class="fa fa-bars"></i>
+                        </button> </div>
+
                     <div class="header-block header-block-nav">
                         <ul class="nav-profile">
-                           
+
                             <li class="profile dropdown">
                                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                                     <span class="name">
-    			      Admin
-    			    </span> </a>
+                                        Admin
+                                    </span> </a>
                                 <div class="dropdown-menu profile-dropdown-menu" aria-labelledby="dropdownMenu1">
-                                     <form action="LoginServlet" method="post" id="f1">                            
-                                    <a class="dropdown-item" href="passwordchange.jsp"> <i class="fa fa-gear icon"></i>  Change Password </a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="javascript:{}" onclick="document.getElementById('f1').submit();">  <i class="fa fa-power-off icon"></i> Logout </a>
-                                    <input type="hidden" name="operation" value="logout" >
-                                </div></form>
+                                    <form action="LoginServlet" method="post" id="f1">                            
+                                        <a class="dropdown-item" href="passwordchange.jsp"> <i class="fa fa-gear icon"></i>  Change Password </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="javascript:{}" onclick="document.getElementById('f1').submit();">  <i class="fa fa-power-off icon"></i> Logout </a>
+                                        <input type="hidden" name="operation" value="logout" >
+                                        </div></form>
                             </li>
                         </ul>
                     </div>
@@ -59,7 +85,7 @@
                             <div class="brand">
                                 <div class="logo"> <span class="l l1"></span> <span class="l l2"></span> <span class="l l3"></span> <span class="l l4"></span> <span class="l l5"></span> </div> Bio Mart </div>
                         </div>
-                         <nav class="menu">
+                        <nav class="menu">
                             <ul class="nav metismenu" id="sidebar-menu">
                                 <li>
                                     <a href="table.html"> <i class="fa fa-home"></i>Payment Status</a>
@@ -68,63 +94,63 @@
                                     <a href=""> <i class="fa fa-th-large"></i> Items Manager <i class="fa arrow"></i> </a>
                                     <ul>
                                         <li> <a href="adminadditem.html">
-                                    Add item
-                                </a> </li>
-                                <li> <a href="adminedititem.html">
-                                    Edit item
-                                </a> </li>
+                                                Add item
+                                            </a> </li>
+                                        <li> <a href="adminedititem.html">
+                                                Edit item
+                                            </a> </li>
                                         <li> <a href="admindeleteitem.jsp">
-                                    Delete Item
-                                </a> </li>
+                                                Delete Item
+                                            </a> </li>
                                     </ul>
                                 </li>
-                                  <li >
+                                <li >
                                     <a href=""> <i class="fa fa-pencil-square-o"></i> Salesman<i class="fa arrow"></i> </a>
-                                     <ul><li > <a href="adminaddsales.jsp">
-                                    Add Salesman
-                                </a> </li>
-                                 <li > <a href="admineditsales.jsp">
-                                    Edit Salesman Details
-                                </a> </li>
-                                 <li > <a href="admindeletesales.jsp">
-                                    Remove Salesman
-                                </a> </li></ul>
+                                    <ul><li > <a href="adminaddsales.jsp">
+                                                Add Salesman
+                                            </a> </li>
+                                        <li > <a href="admineditsales.jsp">
+                                                Edit Salesman Details
+                                            </a> </li>
+                                        <li > <a href="admindeletesales.jsp">
+                                                Remove Salesman
+                                            </a> </li></ul>
                                 </li>
                                 <li class="active open">
                                     <a href=""> <i class="fa fa-user"></i> Retailer<i class="fa arrow"></i> </a>
-                                     <ul><li > <a href="adminaddret.html">
-                                    Add retailerman
-                                </a> </li>
-                                 <li > <a href="admineditret.html">
-                                    Edit Retailer Details
-                                </a> </li>
-                                 <li > <a href="adminrefer.html">
-                                    Referred Details
-                                </a> </li>
-                                 <li class="active"> <a href="admindeleteret.html">
-                                    Remove Retailer
-                                </a> </li></ul>
+                                    <ul><li > <a href="adminaddret.jsp">
+                                                Add Retailer
+                                            </a> </li>
+                                        <li > <a href="admineditret.jsp">
+                                                Edit Retailer Details
+                                            </a> </li>
+                                        <li > <a href="adminrefer.html">
+                                                Referred Details
+                                            </a> </li>
+                                        <li class="active"> <a href="admindeleteret.html">
+                                                Remove Retailer
+                                            </a> </li></ul>
                                 </li>
                                 <li>
                                     <a href=""> <i class="fa fa-th-large"></i>Orders<i class="fa arrow"></i> </a>
                                     <ul>
                                         <li> <a href="adminorderconfirm.html">
-                                    Order Confirmation
-                                </a> </li>
+                                                Order Confirmation
+                                            </a> </li>
                                         <li> <a href="adminorderpending.html">
-                                    Pending Order
-                                </a> </li>
+                                                Pending Order
+                                            </a> </li>
                                     </ul>
                                 </li>
-                                 <li>
+                                <li>
                                     <a href=""> <i class="fa fa-envelope"></i> Cheque Status <i class="fa arrow"></i> </a>
                                     <ul>
                                         <li> <a href="adminchequestatus.html">
-                                    Status Update
-                                </a> </li>
+                                                Status Update
+                                            </a> </li>
                                         <li> <a href="chequetransaction.html">
-                                    Transaction
-                                </a> </li>
+                                                Transaction
+                                            </a> </li>
                                     </ul>
                                 </li>
                             </ul>
@@ -135,7 +161,7 @@
                             <li>
                                 <ul>
                                     <li class="customize">
-                                       
+
                                         <div class="customize-item">
                                             <ul class="customize-colors">
                                                 <li> <span class="color-item color-red" data-theme="red"></span> </li>
@@ -154,34 +180,35 @@
                     </footer>
                 </aside>
                 <div class="sidebar-overlay" id="sidebar-overlay"></div>
-                 <article class="content items-list-page">
-                <div class="title-block">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <h3 class="title"> Remove Retailer
-                                
-                                    </h3>
-                                </div>
+                <article class="content items-list-page">
+                    <div class="title-block">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="title"> Remove Retailer
+
+                                </h3>
                             </div>
                         </div>
+                    </div>
                     <div class="row">  
                         <div class="col-md-8">  
-                            <input class="form-control form-control-lg" type="text" list="storeid" placeholder="Store Name"></div>
-                              <datalist id="storeid">
-                              <option class=>newm</option>
-                                  <option>new</option>
-                              </datalist>   </div><br>
-              <div class="row"><div class="col-md-8">
-              <input class="form-control form-control-lg" type="text" list="rname" placeholder="Retailer Name"></div>
-              <datalist id="rname">
-              <option class=>newm</option>
-                  <option>new</option>
-              </datalist>    </div>   <br>
-               <div class="form-group row">
-                                <div class="col-sm-10 col-sm-offset-2"> <button type="submit" class="btn btn-primary">
-                    Delete
-                </button> </div>
-                            </div>                   
+                            <input class="form-control form-control-lg" type="text" list="storenameid" placeholder="Select Store Name" name="storename" id="storename"></div>
+                        <datalist id="storenameid">
+                        </datalist>   
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <input class="form-control form-control-lg" type="text" list="retailerlist" placeholder="Retailer Name" name="username" id="username"></div>
+                        <datalist id="retailerlist">
+                        </datalist>  
+                    </div> 
+                    <br>
+                    <div class="form-group row">
+                        <div class="col-sm-10 col-sm-offset-2"> <button type="submit" class="btn btn-primary">
+                                Delete
+                            </button> </div>
+                    </div>                   
                 </article>
             </div>
         </div>
@@ -194,15 +221,15 @@
             </div>
         </div>
         <script>
-            (function(i, s, o, g, r, a, m)
+            (function (i, s, o, g, r, a, m)
             {
                 i['GoogleAnalyticsObject'] = r;
-                i[r] = i[r] || function()
+                i[r] = i[r] || function ()
                 {
                     (i[r].q = i[r].q || []).push(arguments)
                 }, i[r].l = 1 * new Date();
                 a = s.createElement(o),
-                    m = s.getElementsByTagName(o)[0];
+                        m = s.getElementsByTagName(o)[0];
                 a.async = 1;
                 a.src = g;
                 m.parentNode.insertBefore(a, m)
