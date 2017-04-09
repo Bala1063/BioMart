@@ -49,10 +49,41 @@
                     return new ActiveXObject("Microsoft.XMLHTTP");
                 }
             }
+            function storelist()
+            {
+               
+                checkStatus();
+                req = get();
+                var url = "AdminRetailerServlet?operation=" + "storelist";
+                req.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                       
+                        document.getElementById("storenameid").innerHTML =
+                                this.responseText;
+                    }
+                };
+                req.open("POST", url, true);
+                req.send(null);
+            }
+            function retailerlist(storename)
+                        {
+                         
+                 req = get();
+                var url = "AdminRetailerServlet?operation=retailerlist&&storename="+storename;
+                req.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                                          document.getElementById("username").value =
+                                this.responseText;
+                    }
+                };
+                req.open("POST", url, true);
+                req.send(null);
+            }
         </script>
+       
     </head>
 
-    <body>
+    <body onload="storelist()">
         <div class="main-wrapper">
             <div class="app" id="app">
                 <header class="header">
@@ -190,25 +221,34 @@
                             </div>
                         </div>
                     </div>
+                    <form action="AdminRetailerServlet" method="post">
                     <div class="row">  
                         <div class="col-md-8">  
-                            <input class="form-control form-control-lg" type="text" list="storenameid" placeholder="Select Store Name" name="storename" id="storename"></div>
+                            <input class="form-control form-control-lg" type="text" list="storenameid" placeholder="Select Store Name" name="storename" id="storename" oninput="retailerlist(this.value)"></div>
                         <datalist id="storenameid">
                         </datalist>   
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-md-8">
-                            <input class="form-control form-control-lg" type="text" list="retailerlist" placeholder="Retailer Name" name="username" id="username"></div>
-                        <datalist id="retailerlist">
-                        </datalist>  
+                            <input class="form-control form-control-lg" type="text"  placeholder="Retailer Name" name="username" id="username" value=""></div>
+                        
                     </div> 
                     <br>
+                    <input type="hidden"  id="userid" name="userid" value="" />
+                        <%if (request.getAttribute("status") != null) {%>
+                        <input type="hidden" name="status" id="status" value="<%=(String) request.getAttribute("status")%>"/>
+                        <%request.setAttribute("status", null);
+                        } else {%>
+                        <input type="hidden" name="status" id="status" />
+                        <%}%>
                     <div class="form-group row">
-                        <div class="col-sm-10 col-sm-offset-2"> <button type="submit" class="btn btn-primary">
-                                Delete
-                            </button> </div>
-                    </div>                   
+                        <div class="col-sm-10 col-sm-offset-2"> <button type="submit" value="remove" name="operation" class="btn btn-primary">
+                                Remove
+                            </button> 
+                        </div>
+                    </div> 
+                    </form>
                 </article>
             </div>
         </div>

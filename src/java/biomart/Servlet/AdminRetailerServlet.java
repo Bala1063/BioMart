@@ -76,40 +76,52 @@ public class AdminRetailerServlet extends HttpServlet {
                 for (PersonalDetailsBean personalDetailsBean : personalDetailsBeans) {
                     storelist += "<option>" + personalDetailsBean.getStoreName() + "</option>";
                 }
-                 out.println(storelist);
+                out.println(storelist);
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else if (operation.equalsIgnoreCase("getDetails")) {
+        } else if (operation.equalsIgnoreCase("getDetails")) {
             response.setContentType("text/html;charset=UTF-8");
             PrintWriter out = response.getWriter();
             String details = "";
             String storeName = request.getParameter("storename");
-                      
+
             try {
-                RetailerDAO retailerDAO=new RetailerDAO();
-                String retailerId=retailerDAO.getRetailerId(storeName);
-                if(retailerId!=null){
-                PersonalDetailsBean personalDetailsBean = retailerDAO.viewRetailerDetails(retailerId);
-                details = personalDetailsBean.toString();}
+                RetailerDAO retailerDAO = new RetailerDAO();
+                String retailerId = retailerDAO.getRetailerId(storeName);
+                if (retailerId != null) {
+                    PersonalDetailsBean personalDetailsBean = retailerDAO.viewRetailerDetails(retailerId);
+                    details = personalDetailsBean.toString();
+                }
                 System.out.println(details);
                 out.println(details);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            
-    }
-        else if (operation.equalsIgnoreCase("remove")) {
-            String salesmanname = request.getParameter("username");
-            long mobileno = Long.parseLong(request.getParameter("mobileno"));
-
-            if (new AdminDAO().removeUserDetails(salesmanname, mobileno).equalsIgnoreCase("success")) {
-                request.setAttribute("status", "Salesman Removed");
-                request.getRequestDispatcher("admindeletesales.jsp").forward(request, response);
+        } else if (operation.equalsIgnoreCase("retailerlist")) {
+             response.setContentType("text/html;charset=UTF-8");
+            PrintWriter out = response.getWriter();
+          String storeName = request.getParameter("storename");
+             String details = "";
+             try {
+                RetailerDAO retailerDAO = new RetailerDAO();
+                String retailerId = retailerDAO.getRetailerId(storeName);
+                if (retailerId != null) {
+                    PersonalDetailsBean personalDetailsBean = retailerDAO.viewRetailerDetails(retailerId);
+                    details = personalDetailsBean.getUserName();
+                }
+                System.out.println(details);
+                out.println(details);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
-        }
-        
-}
+        } else if (operation.equalsIgnoreCase("remove")) {
+            String storename = request.getParameter("storename");
+            String retailername=request.getParameter("retailername");
+
+              }
+
+    }
 }
